@@ -2,6 +2,13 @@ import express from "express"
 import dontenv from "dotenv"
 dontenv.config("./.env")
 
+const app = express()
+const port = 3000
+
+app.use(cors())
+
+import cors from "cors"
+
 import connectDB from "./src/config/mongoo.config.js"
 import urlSchema from "./src/config/models/shortUrl.model.js"
 
@@ -9,8 +16,6 @@ import urlSchema from "./src/config/models/shortUrl.model.js"
 import shortUrl from "./src/routes/short_url.route.js"
 import { redirectFromShortUrl } from "./src/controller/shortUrl.controller.js"
 
-const app = express()
-const port = 3000
 
 
 app.use(express.json())
