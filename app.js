@@ -10,10 +10,11 @@ app.use(cors())
 import cors from "cors"
 
 import connectDB from "./src/config/mongoo.config.js"
-import urlSchema from "./src/config/models/shortUrl.model.js"
+import urlSchema from "./src/models/shortUrl.model.js"
 
 
 import shortUrl from "./src/routes/short_url.route.js"
+import auth_route from "./src/routes/auth.route.js"
 import { redirectFromShortUrl } from "./src/controller/shortUrl.controller.js"
 
 
@@ -22,7 +23,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 
-
+app.use("/auth",auth_route)
 app.use("/api/create",shortUrl)
 
 app.get("/:id",redirectFromShortUrl)
