@@ -1,12 +1,11 @@
 import {verifyToken} from "../utils/helper.js"
 
 export const authMiddleware = async (req, res, next) => {
-    const token = req.cookies.accessToken
-    if (!token) return res.status(401).json({
-        message: "Unauthrized"
-    })
-
     try {
+        const token = req.cookies?.accessToken
+
+        if(!token) return next()
+
         const decoded = verifyToken(token)
         const user = await findUserById(decoded.id)
         if (!user) return res.status(401).json({
@@ -16,8 +15,7 @@ export const authMiddleware = async (req, res, next) => {
         req.user = user
         next()
     } catch (error) {
-        return res.status(401).json({
-            message: "Unauthrized"
-        })
+        
+        next()
     }
 }

@@ -6,17 +6,23 @@ import { cookieOptions } from "../config/config.js"
 export const register_user = wrapAsync(async (req, res) => {
     const { name, email, password } = req.body
 
-    const token = await registerUSer(name, email, password)
+    const { token, newUser } = await registerUSer(name, email, password)
+    req.user = newUser
     res.cookie("accessToken", token, cookieOptions)
     res.status(200).json({
-        message: "register success"
+        message: "register success", newUser
     })
 })
 
 export const login_user = wrapAsync(async (req, res) => {
     const { email, password } = req.body
-    const token = await loginUser(email, password)
-    req.user
+    if (!email || !password) {
+        return res.status(400).json({ message: "Email and password are required" })
+    }
+    const { token, user } = await loginUser(email, password)
+    req.user = user
+    console.log(`${user} from login_user()`);
+
     res.cookie("accessToken", token, cookieOptions)
     res.status(200).json({
         message: "login success"
