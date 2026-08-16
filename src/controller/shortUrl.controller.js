@@ -4,8 +4,6 @@ import wrapAsync from "../utils/tryCatchWrapper.js"
 
 export const createShortUrl = wrapAsync(async (req, res) => {
     const { url } = req.body
-    console.log(req.user);
-    
     
     let shortUrl
     if (req.user) {
@@ -20,8 +18,14 @@ export const createShortUrl = wrapAsync(async (req, res) => {
 })
 
 export const createCustomShortUrl = wrapAsync(async (req, res) => {
-    const { url, customUrl } = req.body
-    const short_url = await createShortUrlWithUser(url, short_url)
+    console.log("in custom url route....");
+    
+    if(!req.user) throw new Error("Login first to create custom url")
+
+    const { url, slug } = req.body
+    console.log(`url = ${url} \n custom url = ${slug}`);
+    
+    const short_url = await createShortUrlWithUser(url,req.user._id,slug)
     res.status(200).json({
         short_url: process.env.APP_URL + short_url
     })
@@ -30,7 +34,6 @@ export const createCustomShortUrl = wrapAsync(async (req, res) => {
 export const redirectFromShortUrl = wrapAsync(async (req, res) => {
 
     const { id } = req.params
-    console.log(`In get route url = ${id}`);
     const url = await getShortUrl(id)
     if (url) {
         res.redirect(url.full_url)

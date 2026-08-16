@@ -1,11 +1,7 @@
 import express from "express"
 import dontenv from "dotenv"
+import cookieParser from "cookie-parser"
 dontenv.config("./.env")
-
-const app = express()
-const port = 3000
-
-app.use(cors())
 
 import cors from "cors"
 
@@ -17,8 +13,12 @@ import shortUrl from "./src/routes/short_url.route.js"
 import auth_route from "./src/routes/auth.route.js"
 import { redirectFromShortUrl } from "./src/controller/shortUrl.controller.js"
 
+const app = express()
+const port = 3000
 
 
+app.use(cors())
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 

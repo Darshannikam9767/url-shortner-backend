@@ -1,8 +1,6 @@
 import urlSchema from "../models/shortUrl.model.js"
 
 export const saveShortUrl = async (url, shortUrl, userId) => {
-
-    console.log(`${userId} from url dao`);
     
     const newUrl = await new urlSchema({
         full_url: url,

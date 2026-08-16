@@ -21,7 +21,6 @@ export const login_user = wrapAsync(async (req, res) => {
     }
     const { token, user } = await loginUser(email, password)
     req.user = user
-    console.log(`${user} from login_user()`);
 
     res.cookie("accessToken", token, cookieOptions)
     res.status(200).json({
