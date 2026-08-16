@@ -1,16 +1,16 @@
 import express from "express"
 import wrapAsync from "../utils/tryCatchWrapper.js"
-import { loginUser, registerUSer } from "../services/auth.service.js"
+import { loginUser, registerUser } from "../services/auth.service.js"
 import { cookieOptions } from "../config/config.js"
 
 export const register_user = wrapAsync(async (req, res) => {
     const { name, email, password } = req.body
 
-    const { token, newUser } = await registerUSer(name, email, password)
+    const { token, newUser } = await registerUser(name, email, password)
     req.user = newUser
     res.cookie("accessToken", token, cookieOptions)
     res.status(200).json({
-        message: "register success", newUser
+        message: "register success", 
     })
 })
 
