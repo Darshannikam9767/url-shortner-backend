@@ -2,7 +2,7 @@ import jsonwebtoken from "jsonwebtoken"
 
 import { createUser, findUserByEmail } from "../dao/user.dao.js"
 import { signToken } from "../utils/helper.js"
-
+import bcrypt from "bcrypt"
 export const registerUser = async (name, email, password) => {
     const user = await findUserByEmail(email)
 
@@ -19,8 +19,7 @@ export const loginUser = async (email, password) => {
 
     const user = await findUserByEmail(email)
     
-
-    if(!user || user.password !== password) throw new Error("Invalid Credentials")
+    if(!user || !(await bcrypt.compare(password, user.password))) throw new Error("Invalid Credentials")
     
     const token = await signToken({id : user._id})
     return {token,user}
